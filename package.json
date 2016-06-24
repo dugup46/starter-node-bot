@@ -1,14 +1,14 @@
 {
-  "name": "node-slack-bot",
+  "name": "weather-nod-bot",
   "version": "1.0.0",
-  "description": "A sample Beep Boop Node.js Slackbot",
+  "description": "This bot should provide some awesome weather data for storm chasers",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/beepboophq/node-slack-bot.git"
+    "url": "git+https://github.com/dugup46/weather-nod-bot.git"
   },
   "keywords": [
     "slackbot",
@@ -18,11 +18,11 @@
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/beepboophq/node-slack-bot/issues"
+    "url": "https://github.com/dugup46/weather-nod-bot/"
   },
-  "homepage": "https://github.com/beepboophq/node-slack-bot#readme",
+  "homepage": "https://github.com/dugup46/weather-nod-bot#readme",
   "dependencies": {
     "beepboop-botkit": "^1.4.0",
-    "botkit": "~0.1.1"
+    "botkit": "^0.1.2"
   }
 }
