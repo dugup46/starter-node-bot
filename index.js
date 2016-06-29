@@ -31,13 +31,13 @@ controller.hears(['help'], 'direct_message,direct_mention,mention', function(bot
         }
     });
     
-    var help = '*1)* I will initiate by you typing the following message: \n' +
-        '*`@' + bot.identity.name + ' radar`* After initial call, I will ask for site and type of scan.\n' +
-	'*2)* You must provide the exact 3 letter NWS site ID - You can find that list here:\n' +
-	'http://www.nws.noaa.gov/emwin/sitename.htm\n\n' +
-        '*3)* Here is a list of all the types of scans I can currently run:\n' +
-        '*`reflect` Base Reflecivity* - Lower level scan, most common.\n' +
-        '*`velocity` Base Velocity* - Provides wind speeds and direction.\n' +
+    var help = 'Interacting with the @weather bot is simple! \n\n' + 
+    'Just use `@weather radar <WFO SID> <scantype>` to call a scan.  Example `@weather radar pbz reflect` for a reflectivity scan of Pittsburgh. \n\n' +
+    '*Radars)* You must provide the exact 3 letter WFO SID - You can find that list here:\n' +
+	'https://www.roc.noaa.gov/wsr88d/Program/NetworkSites.aspx\n\n' +
+    '*Scan Types)* Here is a list of all the types of scans I can currently run:\n' +
+    '*`reflect` Base Reflecivity* - Lower level scan, most common.\n' +
+    '*`velocity` Base Velocity* - Provides wind speeds and direction.\n' +
 	'*`motion` Relative Storm Motion* - Provides small scale rotations and mesocyclones.\n' +
 	'*`composite` Base Reflectivity* Composite - Composite scan of all BR level scans.\n' +
 	'*`1hour` 1 Hour Precipitation* - Provides the level of rainfall in the past 1 hour.\n' +
