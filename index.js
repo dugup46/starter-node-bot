@@ -46,32 +46,83 @@ controller.hears(['help'], 'direct_message,direct_mention,mention', function(bot
 });
 
 controller.hears(['radar'], ['direct_message', 'direct_mention'], function (bot, message) {
+    
+    if (message.text == "radar"){
+    
+		bot.startConversation(message, function(err, convo) {
 
-    controller.storage.users.get(message.user, function(err, user) {
-        
-	bot.startConversation(message, function(err, convo) {
+			convo.ask('Which radar site do you want?', function(response, convo) {
 
-		convo.ask('Which radar site do you want?', function(response, convo) {
+				convo.next();
 
-			convo.next();
+			}, {'key': 'radarsite'}); // store the results in a field called nickname
 
-		}, {'key': 'radarsite'}); // store the results in a field called nickname
+			convo.ask('Which type of radar scan do you want?', function(response, convo) {
 
-		convo.ask('Which type of radar scan do you want?', function(response, convo) {
+				convo.next();
 
-			convo.next();
+			}, {'key': 'scantype'}); // store the results in a field called nickname
+			
+			convo.on('end', function(convo) {
+				if (convo.status == 'completed') {
 
-		}, {'key': 'scantype'}); // store the results in a field called nickname
+					var scantype = convo.extractResponse('scantype');
+					scantype = scantype.toLowerCase();
+					var radarsite = convo.extractResponse('radarsite');
+					radarsite = radarsite.toUpperCase();
+					
+					switch(scantype) {
+					case "reflect":
+						var scantype = "N0R"
+						break;
+					case "velocity":
+						var scantype = "N0V"
+						break;
+					case "motion":
+						var scantype = "N0S"
+						break;
+					case "1hour":
+						var scantype = "N1P"
+						break;
+					case "composite":
+						var scantype = "NCR"
+						break;
+					case "total":
+						var scantype = "NTP"
+						break;
+					default:
+						scantype = "N0R"
+					} 
+					
+					var text = "Here is the " + scantype + " scan from your requested location: "
+					var attachment = [{
+							"title": "For a direct link to the NWS page for " + radarsite + ", click here.",
+							"title_link": "http://www.weather.gov/" + radarsite + "/",
+							"text": text,
+							"fallback": text,
+							"image_url": "http://radar.weather.gov/ridge/RadarImg/" + scantype + "/" + radarsite + "_" + scantype + "_0.gif",
+							"color": "#7CD197",
+					}]
+
+					bot.reply(message, {
+						attachments: attachment
+					}, function (err, resp) {
+						console.log(err, resp)
+						})
+					}
+				});
+			});
+		} 
 		
-		convo.on('end', function(convo) {
-			if (convo.status == 'completed') {
-
-				var scantype = convo.extractResponse('scantype');
-				scantype = scantype.toLowerCase();
-				var radarsite = convo.extractResponse('radarsite');
-				radarsite = radarsite.toUpperCase();
-				
-				switch(scantype) {
+		else {
+			
+			var TheMessage = message.text;
+			var SplitMessage = TheMessage.split(" "); 
+			
+			var scantype = SplitMessage[2].toLowerCase();
+			var radarsite = SplitMessage[1].toUpperCase();
+			
+			switch(scantype) {
 				case "reflect":
 					var scantype = "N0R"
 					break;
@@ -92,25 +143,23 @@ controller.hears(['radar'], ['direct_message', 'direct_mention'], function (bot,
 					break;
 				default:
 					scantype = "N0R"
-				} 
-				
-				var text = "Here is the " + scantype + " scan from your requested location: "
-				var attachment = [{
-						"title": "For a direct link to the NWS page for " + radarsite + ", click here.",
-						"title_link": "http://www.weather.gov/" + radarsite + "/",
-						"text": text,
-						"fallback": text,
-						"image_url": "http://radar.weather.gov/ridge/RadarImg/" + scantype + "/" + radarsite + "_" + scantype + "_0.gif",
-						"color": "#7CD197",
-				}]
+			}
+					
+			var text = "Here is the " + scantype + " scan from your requested location: "
+			var attachment = [{
+					"title": "For a direct link to the NWS page for " + radarsite + ", click here.",
+					"title_link": "http://www.weather.gov/" + radarsite + "/",
+					"text": text,
+					"fallback": text,
+					"image_url": "http://radar.weather.gov/ridge/RadarImg/" + scantype + "/" + radarsite + "_" + scantype + "_0.gif",
+					"color": "#7CD197",
+			}]
 
-				bot.reply(message, {
-					attachments: attachment
-				}, function (err, resp) {
-					console.log(err, resp)
-					})
-				}
-			});
-		});
-    });
+			bot.reply(message, {
+						attachments: attachment
+					}, function (err, resp) {
+						console.log(err, resp)
+						});
+			 
+		}
 })
